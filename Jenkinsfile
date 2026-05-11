@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "yourdockerhubusername/python-app"
+        IMAGE_NAME = "mahesh9154/python-app"
         IMAGE_TAG = "latest"
     }
 
