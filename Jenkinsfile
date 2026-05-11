@@ -8,22 +8,21 @@ pipeline {
 
     stages {
 
-        // Clone GitHub Repo
         stage('Clone Repository') {
             steps {
+
                 git branch: 'main',
-                url: 'https://github.com/yourusername/python-app.git'
+                url: 'https://github.com/itsChandramahesh/Devops-task-4.git'
+
             }
         }
 
-        // Build Docker Image
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t $IMAGE_NAME:$IMAGE_TAG .'
             }
         }
 
-        // DockerHub Login
         stage('Docker Login') {
             steps {
 
@@ -40,37 +39,11 @@ pipeline {
             }
         }
 
-        // Push Image
         stage('Push Docker Image') {
             steps {
                 sh 'docker push $IMAGE_NAME:$IMAGE_TAG'
             }
         }
 
-        // Optional Container Test
-        stage('Run Container') {
-            steps {
-                sh '''
-                docker stop python-app || true
-                docker rm python-app || true
-
-                docker run -d \
-                --name python-app \
-                -p 5000:5000 \
-                $IMAGE_NAME:$IMAGE_TAG
-                '''
-            }
-        }
-
-    }
-
-    post {
-        success {
-            echo 'Docker Image Successfully Pushed!'
-        }
-
-        failure {
-            echo 'Pipeline Failed!'
-        }
     }
 }
